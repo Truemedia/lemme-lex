@@ -33,6 +33,13 @@ class Lexeme
     {
         return {[this.word]: this.tags};
     }
+
+    toRecord()
+    {
+      return {
+        name: this.word, tags: this.tags
+      };
+    }
 }
 
 module.exports = {Lexicon, Lexeme};
