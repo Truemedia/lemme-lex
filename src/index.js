@@ -22,6 +22,20 @@ class Lexicon
     }
 
     /**
+      * Get lexicon words grouped by tag ({tag: [...words]})
+      */
+    get byTags()
+    {
+      let obj = {};
+      this.uniqueTags.map(tag => {
+        obj[tag] = this.lexemes.filter(lexeme => {
+          return lexeme.hasTag(tag)
+        }).map(lexeme => lexeme.word);
+      });
+      return obj;
+    }
+
+    /**
       * Get lexicon as list
       */
     get list()
@@ -89,6 +103,16 @@ class Lexicon
       return txt;
     }
 
+    /**
+      * Get unique tags present in lexemes
+      */
+    get uniqueTags()
+    {
+      return Array.from( new Set(
+        ...this.lexemes.map(lexeme => lexeme.tags)
+      ));
+    }
+
     toFile(filename)
     {
       let basename = path.basename(filename);
@@ -143,6 +167,14 @@ class Lexeme
       return {
         name: this.word, tags: this.tags
       };
+    }
+
+    /**
+      * Check if record has matching tag
+      */
+    hasTag(tag)
+    {
+      return this.tags.includes(tag);
     }
 }
 
