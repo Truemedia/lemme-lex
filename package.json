@@ -1,6 +1,6 @@
 {
   "name": "lemme-lex",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A library for creating dictionaries that can be utilised by NLP tools",
   "main": "src/index.js",
   "scripts": {
