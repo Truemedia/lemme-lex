@@ -65,7 +65,7 @@ class Lexicon
             });
         break;
         case 'txt':
-          return new Promise(function(resolve, reject) {
+          return new Promise( (resolve, reject) => {
             let instance = new this;
             lineReader.eachLine(filename, function(line, last) {
               let values = line.split('" "').map(value => value.replace('"', ''));
