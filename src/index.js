@@ -117,21 +117,26 @@ class Lexicon
     {
       let basename = path.basename(filename);
       let [name, ext] = basename.split('.');
-      switch (ext)
-      {
-        case 'json':
-          jsonfile.writeFile(filename, this.object, { spaces: 2 }, function(err) {
-            if (err) console.error(err);
-            console.log(`JSON file saved to disk: ${filename}`);
-          });
-        break;
-        case 'txt':
-          fs.writeFile(filename, this.txt, function(err) {
-            if (err) console.log(err);
-            console.log(`Text file saved to disk: ${filename}`);
-          });
-        break;
-      }
+
+      return new Promise( (resolve, reject) => {
+        switch (ext)
+        {
+          case 'json':
+            jsonfile.writeFile(filename, this.object, { spaces: 2 }, function(err) {
+              if (err) console.error(err);
+              let msg = `JSON file saved to disk: ${filename}`;
+              resolve(msg);
+            });
+          break;
+          case 'txt':
+            fs.writeFile(filename, this.txt, function(err) {
+              if (err) console.log(err);
+              let msg = `Text file saved to disk: ${filename}`;
+              resolve(msg);
+            });
+          break;
+        }
+      });
     }
 }
 
