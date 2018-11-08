@@ -106,6 +106,7 @@ module.exports = class Lexeme
     */
   missingContext()
   {
+    let ctx = 'default';
     let match = Object.entries(this.expander.opts).find(ctx => {
       let [context, allowed] = ctx;
       if (allowed) {
@@ -114,7 +115,10 @@ module.exports = class Lexeme
         return false;
       }
     });
-    let [ctx] = match
+
+    if (match) {
+      [ctx] = match;
+    }
     return ctx;
   }
 
@@ -126,7 +130,8 @@ module.exports = class Lexeme
     if (this.expander != null) {
       return this.expander.expanded().then(spellings => {
         this.spellings = spellings;
-        return null;
+      }).then(() => {
+        this.addSpelling(this.word, 'default');
       });
     } else {
       return this.json;
