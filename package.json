@@ -30,6 +30,8 @@
   "dependencies": {
     "json2csv": "^4.2.1",
     "jsonfile": "^5.0.0",
+    "kuroshiro": "^1.1.2",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "line-reader": "^0.4.0"
   }
 }

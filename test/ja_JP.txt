@@ -1,0 +1,3 @@
+"おはようございます" "お早う御座います" "ArrivalSalutation"
+"オハヨウゴザイマス" "お早う御座います" "ArrivalSalutation"
+"ohayōgozaimasu" "お早う御座います" "ArrivalSalutation"
