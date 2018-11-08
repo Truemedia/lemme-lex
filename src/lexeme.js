@@ -107,18 +107,22 @@ module.exports = class Lexeme
   missingContext()
   {
     let ctx = 'default';
-    let match = Object.entries(this.expander.opts).find(ctx => {
-      let [context, allowed] = ctx;
-      if (allowed) {
-        return (this.spellings[context] == undefined);
-      } else {
-        return false;
-      }
-    });
+    
+    if (this.expander != null) {
+      let match = Object.entries(this.expander.opts).find(ctx => {
+        let [context, allowed] = ctx;
+        if (allowed) {
+          return (this.spellings[context] == undefined);
+        } else {
+          return false;
+        }
+      });
 
-    if (match) {
-      [ctx] = match;
+      if (match) {
+        [ctx] = match;
+      }
     }
+
     return ctx;
   }
 
@@ -134,10 +138,11 @@ module.exports = class Lexeme
         this.addSpelling(this.word, 'default');
       });
     } else {
-      return this.json;
+      return new Promise((resolve, reject) => {
+        this.addSpelling(this.word, 'default');
+        resolve();
+      });
     }
-
-    return expander;
   }
 
   /**

@@ -2,7 +2,7 @@ const {Lexicon, Lexeme} = require('./src/index');
 
 let testLocales = {
   'en_GB': { // English (British)
-    run: false,
+    run: true,
     phrase: 'hello'
   },
   'ja_JP': { // Japanese
