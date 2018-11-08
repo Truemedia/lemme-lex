@@ -1,55 +1,45 @@
 const {Lexicon, Lexeme} = require('./src/index');
 
 let testLocales = {
-  'en_GB': false,
-  'ja_JP': true
+  'en_GB': { // English (British)
+    run: false,
+    phrase: 'hello'
+  },
+  'ja_JP': { // Japanese
+    run: true,
+    phrase: 'お早う御座います'
+  }
 };
 
-/**
-  * English
-  */
-if (testLocales['en_GB']) {
-  let enPhrase = new Lexeme('hello', ['ArrivalSalutation']);
-  let enLex = new Lexicon();
-  enLex.addEntry(enPhrase);
-  enLex.object.then(lex => console.log(lex)); // To JSON
-  enLex.toFile('test/en_GB.json'); // To json file
-  enLex.toFile('test/en_GB.txt'); // To text file
-  Lexicon.fromFile('test/en_GB.json').then(instance => { // From json file
-    console.log('instance', instance);
-  });
-  Lexicon.fromFile('test/en_GB.txt').then(instance => { // From txt file
-    console.log('instance', instance);
-  });
-}
+let tags = ['ArrivalSalutation'];
 
-/**
-  * Japanese
-  */
-if (testLocales['ja_JP']) {
-  // Build data
-  let jaLex = new Lexicon();
-  let jaPhrase = new Lexeme('お早う御座います', ['ArrivalSalutation'], 'ja_JP');
-  jaLex.addEntry(jaPhrase);
+Object.entries(testLocales).map(entry => {
+  let [locale, settings] = entry;
+  if (settings.run) {
+    // Build data
+    let lex = new Lexicon();
+    let phrase = new Lexeme(settings.phrase, tags, locale);
+    lex.addEntry(phrase);
 
-  // Run tests
-  Promise.all([
-    jaLex.toFile('test/ja_JP.json').then(msg => {
-      console.log(msg)
-      return Lexicon.fromFile('test/ja_JP.json').then(instance => { // From json file
-        return instance;
-      });
-    }), // To and from json file
-    jaLex.toFile('test/ja_JP.txt').then(msg => {
-      console.log(msg)
-      return Lexicon.fromFile('test/ja_JP.txt').then(instance => { // From txt file
-        return instance;
-      });
-    }) // To and from text file
-  ]).then((instances) => {
-    let [json, txt] = instances;
-    console.log('from JSON', json);
-    console.log('from TXT', txt);
-    jaLex.object.then(lex => console.log('from build', lex)); // To JSON
-  });
-}
+    // Run tests
+    Promise.all([
+      lex.toFile(`test/${locale}.json`).then(msg => {
+        console.log(msg)
+        return Lexicon.fromFile(`test/${locale}.json`).then(instance => { // From json file
+          return instance;
+        });
+      }), // To and from json file
+      lex.toFile(`test/${locale}.txt`).then(msg => {
+        console.log(msg)
+        return Lexicon.fromFile(`test/${locale}.txt`).then(instance => { // From txt file
+          return instance;
+        });
+      }) // To and from text file
+    ]).then((instances) => {
+      let [json, txt] = instances;
+      console.log(`from JSON (${locale})`, json);
+      console.log(`from TXT (${locale})`, txt);
+      lex.object.then(obj => console.log(`from build (${locale})`, obj)); // To JSON
+    });
+  }
+});
